@@ -42,5 +42,22 @@
  * @return {Interval[]}
  */
 var merge = function(intervals) {
-    
+    if(intervals.length === 0){
+        return [];
+    }
+    let result = [];
+    intervals.sort((a, b) => a[0] > b[0] ? 1 : -1);
+    result.push(intervals[0]);
+    let lastOne;
+    for(let interval of intervals){
+        lastOne = result[result.length - 1];
+        if(interval[0] <= lastOne[1]){
+            lastOne[1] = Math.max(interval[1], lastOne[1]);
+        }else{
+            result.push(interval);
+        }
+    }
+    return result;
 };
+
+

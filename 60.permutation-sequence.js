@@ -50,10 +50,36 @@
  * 
  */
 /**
+ * 1 2 3 4
+ * 1 2 4 3
+ * 1 3 2 4
+ * 1 3 4 2
+ * 1 4 2 3
+ * 1 4 3 2
+ */
+/**
  * @param {number} n
  * @param {number} k
  * @return {string}
  */
 var getPermutation = function(n, k) {
+    let cache = [1, 1];
+
+    for(let i = 2; i <= n; i++){
+        cache[i] = cache[i - 1] * i;
+    }
+
+    let result = [];
+    let nums = Array.from({length: n}, function(value, index){return index + 1});
+    k--;
+    for(let i = 0; i < n; i++){
+        let index = parseInt(k / cache[n - i - 1]);
+        k = k % cache[n - i - 1];
+        result[i] = nums[index];
+        nums.splice(index, 1);
+    }
+
+    return result.join('');
     
 };
+
