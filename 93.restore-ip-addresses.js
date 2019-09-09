@@ -27,5 +27,28 @@
  * @return {string[]}
  */
 var restoreIpAddresses = function(s) {
-    
+    let result = [];
+    helper(s, result, '', 0, 0);
+
+    function helper(s, result, str, index, count){
+        if(count > 4){return;}
+        if(count === 4 && index === s.length){
+            result.push(str);
+        }
+
+        for(let i = 1; i <= 4; i++){
+            if(index + i > s.length){
+                break;
+            }
+            let subStr = s.substring(index, index + i);
+            if((subStr.charAt(0) === '0' && subStr.length > 1) ||
+                parseInt(subStr) >= 256){
+                    continue;
+                }
+            helper(s, result, str+subStr+(count==3?"" : "."), index + i, count+1)
+        }
+    }
+
+    return result;
+
 };
