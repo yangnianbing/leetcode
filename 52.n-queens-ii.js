@@ -45,5 +45,22 @@
  * @return {number}
  */
 var totalNQueens = function(n) {
-    
+    let count = 0;
+    function dfs(queues, diff, sum){
+        let len = queues.length;
+        if(queues.length === n){
+            count++;
+        }else{
+            for(let i = 0; i < n; i++){
+                if(queues.indexOf(i) === -1 && 
+                diff.indexOf(len - i) === -1 &&
+                sum.indexOf(len + i) === -1
+                ){
+                    dfs(queues.concat(i), diff.concat(len - i), sum.concat(len + i));
+                }
+            }
+        }
+    }
+    dfs([], [], [])
+    return count;
 };

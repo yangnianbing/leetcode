@@ -48,20 +48,41 @@
  * @return {string[][]}
  */
 var solveNQueens = function(n) {
-    var pos = [];
+    let result = [];
 
-    function solveNQueensDFS(pos, row, result){
-
-        if(row\)
-    }
-
-    function isValid(pos, row, col){
-        for(var i = 0; i < row; ++i){
-            if(col === pos[i] || Math.abs(row - i) === Math.abs(col - pos[i])){
-                return false;
+    function dFS(queens){
+        if(queens.length === n){
+            result.push(queens);
+            return;
+        }else{
+            for(let i = 0; i < n; i++){
+                if(isValid(queens, i)){
+                    dFS(queens.concat(i));
+                }
             }
         }
-        return true;
+    }
+
+    dFS([]);
+
+
+    return result.map(o => 
+        o.map(row => '.'.repeat(row) + 'Q' + '.'.repeat(n - row - 1)
+        )
+    );
+
+    function isValid(queens, i){
+        //有queue在同一列
+       if(queens.indexOf(i) !== -1){
+           return false;
+       }
+       for(let row = 0, len = queens.length; row < len; row++){
+           if(Math.abs(len - row) === Math.abs(i - queens[row])){
+               return false;
+           }
+       }
+       return true;
     }
 };
+
 

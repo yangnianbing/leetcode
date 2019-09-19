@@ -32,6 +32,9 @@
  * Explanation: Because the new interval [4,8] overlaps with
  * [3,5],[6,7],[8,10].
  * 
+ * 
+ * 
+ * [1,2] [3,5] [4,8] [6,7] [8, 10] [12 ,16]
  */
 /**
  * Definition for an interval.
@@ -46,39 +49,20 @@
  * @return {Interval[]}
  */
 var insert = function(intervals, newInterval) {
-    if(!intervals || intervals.length === 0){
-        return [newInterval];
-    }
-    var staticInfo = {};
-    var min = Math.min(intervals[0].start, newInterval.start)
-    var max = Math.max(intervals[intervals.length - 1].end, newInterval.end)
     intervals.push(newInterval);
-    intervals.forEach(inter => {
-        for(var i = 2 * inter.start; i <= 2 * inter.end; i++){
-            staticInfo[i] = true
-        }
-    })
+    intervals.sort((a, b) => a.start - b.start);
 
-    var newBlock = true;
-    var result = [];
-    var current;
-    for(var i = min; i <= max; i++){
-        if(staticInfo[2 * i] && newBlock){
-            current = {start: i}
-            newBlock = false;
-            if(!staticInfo[2 * i + 1]){
-                current.end = i;
-                result.push(current);
-                newBlock = true;
-            }
-            
-        }else if(staticInfo[2 * i] && !staticInfo[2 * i + 1]){
-            current.end = i;
-            result.push(current);
-            newBlock = true;
+    let result = [intervals[0]];
+    for(let i = 1; i < intervals.length; i++){
+        if(intervals[i].start > result[result.length - 1].end){
+            result.push(intervals[i]);
+        }else{
+            result[result.length - 1].end = Math.max(result[result.length - 1].end, intervals[i].end);
         }
     }
-    return result;
-};
 
-insert([{start:1, end: 5}], {start: 0, end: 0})
+    return result; 
+};
+insert(
+    [{start:1, end: 3}, {start: 6, end: 9}], {start: 2, end: 5}
+)
