@@ -7,10 +7,10 @@ function postorderIterative(root){
     while(stack.length != 0){
         cur = stack.pop();
         result.unshift(cur.val);
-        if(!cur.left){
+        if(cur.left){
             stack.push(cur.left);
         }
-        if(!cur.right){
+        if(cur.right){
             stack.push(cur.right);
         }
     }
